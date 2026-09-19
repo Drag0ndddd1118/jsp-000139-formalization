@@ -2,7 +2,11 @@ import Lake
 open Lake DSL
 
 package "jsp-000139-formalization" where
-  version := "0.1.0"
 
-lean_lib «JSP_000139» where
-  roots := #[`JSP_000139]
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.33.0"
+
+lean_lib ErdosProblems
+
+@[default_target]
+lean_lib «JSP_000139»
