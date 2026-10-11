@@ -1,22 +1,35 @@
-# Standalone Lean 4 Verification for JSP-000139
+# Formalization of JSP-000139 (Erdős Problem #134)
 
-## Erdős Problem #134 (Noga Alon 1997)
+## Problem Overview
 
-This repository contains a standalone, fully verified Lean 4 formalization of the resolution of **Erdős Problem #134** (catalogued as **JSP-000139** in the Justin Sun Prize problems).
+**Catalog ID:** [JSP-000139](https://github.com/TheJustinSunPrize/awards/blob/main/problems/catalog-0101-0200.md#JSP-000139)  
+**Erdős Problem:** [#134](https://www.erdosproblems.com/134)  
+**Mathematical Area:** Graph Theory / Extremal Graph Theory  
 
-### Mathematical Content
-- **Problem**: How large must the maximum degree of a triangle-free graph of diameter at most two be?
-- **Resolution**: Noga Alon (1997, "Triangle-free graphs of diameter 2") proved Theorem 1.2, establishing via the triangle-free process and probabilistic embedding that any $n$-vertex triangle-free graph with maximum degree at most $n^{1/2 - \varepsilon}$ can be extended to a triangle-free graph of diameter 2 with at most $\delta n^2$ additional edges.
-- **Theorem in Lean 4**: `Erdos134.erdos_134` (`jsp_000139`), formally proved with 0 `sorry`, 0 `admit`, and 0 literature axioms.
+### Problem Statement
 
-### Axioms
-Verified by Lean 4 kernel with `#print axioms`:
-`[propext, Classical.choice, Quot.sound]` (standard foundational axioms only).
+How large must the maximum degree of a triangle-free graph of diameter at most two be?
 
-### Build & Verify
+### Resolution
+
+Resolved by Noga Alon (1997, "Triangle-free graphs of diameter 2"), proving Theorem 1.2: any triangle-free graph on n vertices with maximum degree at most n^(1/2 - ε) can be embedded into a triangle-free graph of diameter 2 adding at most δ n^2 edges.
+
+## Formalization Details
+
+- **Contract Statement:** `Challenge.lean` defines `JSP000139.jsp000139Statement`
+- **Solution Theorem:** `Submission.lean` proves `JSP000139.jsp_000139_solved : jsp000139Statement`
+- **Underlying Formalization:** `ErdosProblems/Erdos134.lean` provides complete, fully closed proofs.
+- **Axioms Check:**
+  `#print axioms JSP000139.jsp_000139_solved` yields strictly:
+  ```lean
+  [propext, Classical.choice, Quot.sound]
+  ```
+  **Zero** unproved hypotheses, zero `sorry`, zero `admit`, zero custom axioms.
+
+## Build & Verification Instructions
+
 ```bash
-lake update
 lake exe cache get
 lake build
-lake env lean JSP_000139.lean
+python3 check.py
 ```

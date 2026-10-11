@@ -2431,7 +2431,7 @@ In a list that forms a chain under a transitive and reflexive relation, every el
 the last element.
 -/
 theorem Chain_rel_last {α : Type*} (r : α → α → Prop) (l : List α) (h_chain : List.IsChain r l) (x :
-  α) (hx : x ∈ l) (h_ne : l ≠ []) (h_refl : Reflexive r) (h_trans : Transitive r) :
+  α) (hx : x ∈ l) (h_ne : l ≠ []) (h_refl : ∀ a, r a a) (h_trans : ∀ a b c, r a b → r b c → r a c) :
   r x (l.getLast h_ne) := by
   induction l using List.reverseRecOn generalizing x with
   | nil =>
@@ -2452,7 +2452,7 @@ theorem Chain_rel_last {α : Type*} (r : α → α → Prop) (l : List α) (h_ch
             rw [List.getLast?_eq_getLast_of_ne_nil hl]
             simp
           exact hbridge (l.getLast hl) hlast_mem y (by simp)
-        exact h_trans (IH h_chain_l x hx hl) h_last_rel_y
+        exact h_trans _ _ _ (IH h_chain_l x hx hl) h_last_rel_y
     · exact h_refl x
 
 /-
@@ -2471,9 +2471,9 @@ theorem Path_sublist_le {V : Type} [Fintype V] [DecidableEq V]
       have h_chain_last : List.IsChain (fun s t => s.1 ≤ t.1) path := h_chain
       have h_x_in_path : x ∈ path := hx
       have h_last_ne : path ≠ [] := h_last
-      apply Chain_rel_last (fun s t => s.1 ≤ t.1) path h_chain_last x h_x_in_path h_last_ne (by
-      exact fun _ => le_rfl) (by
-      exact fun a b c hab hbc => le_trans hab hbc);
+      apply Chain_rel_last (fun s t => s.1 ≤ t.1) path h_chain_last x h_x_in_path h_last_ne
+        (fun _ => le_rfl)
+        (fun a b c hab hbc => le_trans hab hbc);
     cases path <;> aesop
 
 /-
